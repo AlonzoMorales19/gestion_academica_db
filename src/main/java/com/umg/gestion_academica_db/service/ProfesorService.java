@@ -27,7 +27,7 @@ public class ProfesorService {
 
     public Profesor actualizarProfesor(Integer id, Profesor profesorDetalles) {
         Profesor profesor = profesorRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Profesor no encontrado con id " + id));
+                .orElseThrow(() -> new RuntimeException("Profesor no encontrado " + id));
 
         profesor.setNombreCompleto(profesorDetalles.getNombreCompleto());
         profesor.setCorreo(profesorDetalles.getCorreo());
@@ -37,7 +37,7 @@ public class ProfesorService {
 
     public void eliminarProfesor(Integer id) {
         Profesor profesor = profesorRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Profesor no encontrado con id " + id));
+                .orElseThrow(() -> new RuntimeException("Profesor no encontrado " + id));
 
         profesorRepository.delete(profesor);
     }

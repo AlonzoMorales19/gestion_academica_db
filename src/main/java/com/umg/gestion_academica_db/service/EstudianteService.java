@@ -27,7 +27,7 @@ public class EstudianteService {
 
     public Estudiante actualizarEstudiante(String carnet, Estudiante estudianteDetalles) {
         Estudiante estudiante = estudianteRepository.findById(carnet)
-                .orElseThrow(() -> new RuntimeException("Estudiante no encontrado con carnet " + carnet));
+                .orElseThrow(() -> new RuntimeException("Estudiante no encontrado " + carnet));
 
         estudiante.setNombre(estudianteDetalles.getNombre());
         estudiante.setApellido(estudianteDetalles.getApellido());
@@ -38,7 +38,7 @@ public class EstudianteService {
 
     public void eliminarEstudiante(String carnet) {
         Estudiante estudiante = estudianteRepository.findById(carnet)
-                .orElseThrow(() -> new RuntimeException("Estudiante no encontrado con carnet " + carnet));
+                .orElseThrow(() -> new RuntimeException("Estudiante no encontrado " + carnet));
 
         estudianteRepository.delete(estudiante);
     }

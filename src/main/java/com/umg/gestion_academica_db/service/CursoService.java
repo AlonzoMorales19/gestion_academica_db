@@ -27,7 +27,7 @@ public class CursoService {
 
     public Curso actualizarCurso(Integer id, Curso cursoDetalles) {
         Curso curso = cursoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Curso no encontrado con id " + id));
+                .orElseThrow(() -> new RuntimeException("Curso no encontrado " + id));
 
         curso.setNombreCurso(cursoDetalles.getNombreCurso());
         curso.setCreditos(cursoDetalles.getCreditos());
@@ -39,7 +39,7 @@ public class CursoService {
 
     public void eliminarCurso(Integer id) {
         Curso curso = cursoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Curso no encontrado con id " + id));
+                .orElseThrow(() -> new RuntimeException("Curso no encontrado " + id));
 
         cursoRepository.delete(curso);
     }
