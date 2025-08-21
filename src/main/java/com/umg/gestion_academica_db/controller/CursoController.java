@@ -1,5 +1,6 @@
 package com.umg.gestion_academica_db.controller;
 
+import com.umg.gestion_academica_db.dto.CursoDTO;
 import com.umg.gestion_academica_db.entities.Curso;
 import com.umg.gestion_academica_db.service.CursoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,5 +55,25 @@ public class CursoController {
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    // Obtener todos como DTO
+    @GetMapping("/dto")
+    public List<CursoDTO> obtenerTodosDTO() {
+        return cursoService.obtenerTodosDTO();
+    }
+
+    // Obtener ID como DTO
+    @GetMapping("/dto/{id}")
+    public ResponseEntity<CursoDTO> obtenerPorIdDTO(@PathVariable Integer id) {
+        return cursoService.obtenerPorIdDTO(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    // Obtener por semestre
+    @GetMapping("/buscar")
+    public List<CursoDTO> buscarPorSemestre(@RequestParam(required = false) Short semestre) {
+        return cursoService.filtrarPorSemestreDTO(semestre);
     }
 }

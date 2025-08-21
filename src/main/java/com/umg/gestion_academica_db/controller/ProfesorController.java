@@ -1,5 +1,6 @@
 package com.umg.gestion_academica_db.controller;
 
+import com.umg.gestion_academica_db.dto.ProfesorDTO;
 import com.umg.gestion_academica_db.entities.Profesor;
 import com.umg.gestion_academica_db.service.ProfesorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,5 +56,25 @@ public class ProfesorController {
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    // Obtener todos como DTO
+    @GetMapping("/dto")
+    public List<ProfesorDTO> obtenerTodosDTO() {
+        return profesorService.obtenerTodosDTO();
+    }
+
+    // Obtener ID como DTO
+    @GetMapping("/dto/{id}")
+    public ResponseEntity<ProfesorDTO> obtenerPorIdDTO(@PathVariable Integer id) {
+        return profesorService.obtenerPorIdDTO(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    // Obtener por Nombre
+    @GetMapping("/buscar")
+    public List<ProfesorDTO> buscarPorNombre(@RequestParam(required = false) String nombre) {
+        return profesorService.filtrarPorNombreDTO(nombre);
     }
 }

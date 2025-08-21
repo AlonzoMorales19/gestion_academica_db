@@ -1,5 +1,6 @@
 package com.umg.gestion_academica_db.service;
 
+import com.umg.gestion_academica_db.dto.ProfesorDTO;
 import com.umg.gestion_academica_db.entities.Profesor;
 import com.umg.gestion_academica_db.repositories.ProfesorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,5 +41,32 @@ public class ProfesorService {
                 .orElseThrow(() -> new RuntimeException("Profesor no encontrado " + id));
 
         profesorRepository.delete(profesor);
+    }
+
+    private ProfesorDTO convertirAProfesorDTO(Profesor profesor) {
+        return new ProfesorDTO(profesor.getIdProfesor(), profesor.getNombreCompleto());
+    }
+
+    public List<ProfesorDTO> obtenerTodosDTO() {
+        return obtenerTodos().stream()
+                .map(this::convertirAProfesorDTO)
+                .toList();
+    }
+
+    public Optional<ProfesorDTO> obtenerPorIdDTO(Integer id) {
+        return obtenerPorId(id).map(this::convertirAProfesorDTO);
+    }
+
+    public List<Profesor> filtrarPorNombre(String nombre) {
+        if (nombre == null || nombre.isBlank()) {
+            return obtenerTodos();
+        }
+        return profesorRepository.findByNombreCompletoContainingIgnoreCase(nombre);
+    }
+
+    public List<ProfesorDTO> filtrarPorNombreDTO(String nombre) {
+        return filtrarPorNombre(nombre).stream()
+                .map(this::convertirAProfesorDTO)
+                .toList();
     }
 }

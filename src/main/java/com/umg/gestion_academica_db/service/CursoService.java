@@ -1,5 +1,6 @@
 package com.umg.gestion_academica_db.service;
 
+import com.umg.gestion_academica_db.dto.CursoDTO;
 import com.umg.gestion_academica_db.entities.Curso;
 import com.umg.gestion_academica_db.repositories.CursoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,5 +43,36 @@ public class CursoService {
                 .orElseThrow(() -> new RuntimeException("Curso no encontrado " + id));
 
         cursoRepository.delete(curso);
+    }
+
+    private CursoDTO convertirACursoDTO(Curso curso) {
+        return new CursoDTO(
+                curso.getIdCurso(),
+                curso.getNombreCurso(),
+                curso.getCreditos(),
+                curso.getSemestre());
+    }
+
+    public List<CursoDTO> obtenerTodosDTO() {
+        return obtenerTodos().stream()
+                .map(this::convertirACursoDTO)
+                .toList();
+    }
+
+    public Optional<CursoDTO> obtenerPorIdDTO(Integer id) {
+        return obtenerPorId(id).map(this::convertirACursoDTO);
+    }
+
+    public List<Curso> filtrarPorSemestre(Short semestre) {
+        if (semestre == null) {
+            return obtenerTodos();
+        }
+        return cursoRepository.findBySemestre(semestre);
+    }
+
+    public List<CursoDTO> filtrarPorSemestreDTO(Short semestre) {
+        return filtrarPorSemestre(semestre).stream()
+                .map(this::convertirACursoDTO)
+                .toList();
     }
 }

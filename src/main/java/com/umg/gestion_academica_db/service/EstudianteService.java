@@ -1,9 +1,12 @@
 package com.umg.gestion_academica_db.service;
 
+import com.umg.gestion_academica_db.dto.EstudianteDTO;
 import com.umg.gestion_academica_db.entities.Estudiante;
 import com.umg.gestion_academica_db.repositories.EstudianteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,5 +44,37 @@ public class EstudianteService {
                 .orElseThrow(() -> new RuntimeException("Estudiante no encontrado " + carnet));
 
         estudianteRepository.delete(estudiante);
+    }
+
+    private EstudianteDTO convertirAEstudianteDTO(Estudiante estudiante) {
+        int edad = LocalDate.now().getYear() - estudiante.getFechaNacimiento().getYear();
+        return new EstudianteDTO(
+                estudiante.getCarnet(),
+                estudiante.getNombre(),
+                estudiante.getApellido(),
+                edad);
+    }
+
+    public List<EstudianteDTO> obtenerTodosDTO() {
+        return obtenerTodos().stream()
+                .map(this::convertirAEstudianteDTO)
+                .toList();
+    }
+
+    public Optional<EstudianteDTO> obtenerPorIdDTO(String carnet) {
+        return obtenerPorId(carnet).map(this::convertirAEstudianteDTO);
+    }
+
+    public List<Estudiante> filtrarPorApellido(String apellido) {
+        if (apellido == null || apellido.isBlank()) {
+            return obtenerTodos();
+        }
+        return estudianteRepository.findByApellidoContainingIgnoreCase(apellido);
+    }
+
+    public List<EstudianteDTO> filtrarPorApellidoDTO(String apellido) {
+        return filtrarPorApellido(apellido).stream()
+                .map(this::convertirAEstudianteDTO)
+                .toList();
     }
 }

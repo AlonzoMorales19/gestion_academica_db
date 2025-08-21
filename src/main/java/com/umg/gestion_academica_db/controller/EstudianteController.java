@@ -1,5 +1,6 @@
 package com.umg.gestion_academica_db.controller;
 
+import com.umg.gestion_academica_db.dto.EstudianteDTO;
 import com.umg.gestion_academica_db.entities.Estudiante;
 import com.umg.gestion_academica_db.service.EstudianteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,5 +56,25 @@ public class EstudianteController {
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    // Obtener todos como DTO
+    @GetMapping("/dto")
+    public List<EstudianteDTO> obtenerTodosDTO() {
+        return estudianteService.obtenerTodosDTO();
+    }
+
+    // Obtener carnet como DTO
+    @GetMapping("/dto/{carnet}")
+    public ResponseEntity<EstudianteDTO> obtenerPorIdDTO(@PathVariable String carnet) {
+        return estudianteService.obtenerPorIdDTO(carnet)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    // Obtener por Apellido
+    @GetMapping("/buscar")
+    public List<EstudianteDTO> buscarPorApellido(@RequestParam(required = false) String apellido) {
+        return estudianteService.filtrarPorApellidoDTO(apellido);
     }
 }
