@@ -23,15 +23,21 @@ public class Curso {
     @Column(name = "ciclo", nullable = false)
     private Short ciclo;
 
+    @ManyToOne
+    @JoinColumn(name = "id_prerequisito")
+    private Curso idPrerequisito;
+
     public Curso() {
     }
 
-    public Curso(Integer idCurso, String nombreCurso, Short creditos, Short semestre, Short ciclo) {
+    public Curso(Integer idCurso, String nombreCurso, Short creditos, Short semestre, Short ciclo,
+            Curso idPrerequisito) {
         this.idCurso = idCurso;
         this.nombreCurso = nombreCurso;
         this.creditos = creditos;
         this.semestre = semestre;
         this.ciclo = ciclo;
+        this.idPrerequisito = idPrerequisito;
     }
 
     public Integer getIdCurso() {
@@ -72,5 +78,13 @@ public class Curso {
 
     public void setCiclo(Short ciclo) {
         this.ciclo = ciclo;
+    }
+
+    public Curso getIdPrerequisito() {
+        return idPrerequisito;
+    }
+
+    public void setIdPrerequisito(Curso idPrerequisito) {
+        this.idPrerequisito = idPrerequisito;
     }
 }

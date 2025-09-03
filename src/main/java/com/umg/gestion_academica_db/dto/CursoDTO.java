@@ -5,12 +5,14 @@ public class CursoDTO {
     private String nombreCurso;
     private Short creditos;
     private Short semestre;
+    private String nombrePrerequisito;
 
-    public CursoDTO(Integer id, String nombreCurso, Short creditos, Short semestre) {
+    public CursoDTO(Integer id, String nombreCurso, Short creditos, Short semestre, String NombrePrerequisito) {
         this.id = id;
         this.nombreCurso = nombreCurso;
         this.creditos = creditos;
         this.semestre = semestre;
+        this.nombrePrerequisito = NombrePrerequisito;
     }
 
     public Integer getId() {
@@ -27,5 +29,9 @@ public class CursoDTO {
 
     public Short getSemestre() {
         return semestre;
+    }
+
+    public String getNombrePrerequisito() {
+        return nombrePrerequisito;
     }
 }

@@ -50,7 +50,8 @@ public class CursoService {
                 curso.getIdCurso(),
                 curso.getNombreCurso(),
                 curso.getCreditos(),
-                curso.getSemestre());
+                curso.getSemestre(),
+                (curso.getIdPrerequisito() != null) ? curso.getIdPrerequisito().getNombreCurso() : null);
     }
 
     public List<CursoDTO> obtenerTodosDTO() {
